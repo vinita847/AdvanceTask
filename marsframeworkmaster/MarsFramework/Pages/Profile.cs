@@ -378,14 +378,17 @@ namespace MarsFramework
 
         #endregion
 
-       //Search Icon
+        #region Search Icon
+        //Search Icon
         [FindsBy (How = How.XPath, Using = "//i[@class='search link icon']")]
         private IWebElement SearchIcon { get; set; }
+        #endregion
 
-
+        #region Chat Icon
         //Chat Icon Tab
-        [FindsBy(How = How.LinkText, Using = " Chat")]
+        [FindsBy(How = How.XPath, Using = "//a[@class='item'][contains(.,'Chat')]")]
         private IWebElement ChatIcon { get; set; }
+        #endregion
 
         #endregion
 

@@ -149,7 +149,7 @@ namespace MarsFramework
                     Console.WriteLine(ExpectedMsg);
 
                 }
-                catch(Exception e)
+                catch(NoSuchElementException)
                 {
                     Console.Write("Skill not added");
                     test.Log(LogStatus.Fail, "Test Failed");
@@ -173,7 +173,7 @@ namespace MarsFramework
                     Console.WriteLine(ExpectedMsg);
 
                 }
-                catch (Exception e)
+                catch (NoSuchElementException)
                 {
                     Console.Write("Education not added");
                     test.Log(LogStatus.Fail, "Test Failed");
@@ -198,7 +198,7 @@ namespace MarsFramework
                     Console.WriteLine(ExpectedMsg);
 
                 }
-                catch (Exception e)
+                catch (NoSuchElementException)
                 {
                     Console.Write("Certificate not added");
                     test.Log(LogStatus.Fail, "Test Failed");
@@ -224,7 +224,7 @@ namespace MarsFramework
                     Console.WriteLine(ExpectedMsg);
 
                 }
-                catch (Exception e)
+                catch (NoSuchElementException)
                 {
                     Console.Write("Description not added");
                     test.Log(LogStatus.Fail, "Test Failed");
@@ -653,8 +653,38 @@ namespace MarsFramework
                 catch (Exception e)
                 {
                     test.Log(LogStatus.Fail, "Service is not deleted");
-                    Console.WriteLine(e + "Test Failed");
+                    Console.WriteLine(e.Message + "Test Failed");
                 }
+            }
+            [Test]
+            public void Chat()
+            {
+                test = extent.StartTest("Varifying test functionality for a specific user");
+               
+                Profile profileObj = new Profile();
+                profileObj.ClickonChatTab();
+                Message msgObj = new Message();
+                msgObj.SendingTextSteps();
+                string ActualMsg = msgObj.ExpectedMsg();
+                string ExpectedMsg = "Text message";
+                //int oldCount = msgObj.LatestText();
+                //int newCount = msgObj.LatestText() + 1;
+                //Assert.IsTrue(newCount > oldCount, "Icremented by 1");
+                try
+                {
+
+                    Assert.AreEqual(ExpectedMsg, ActualMsg);
+                    test.Log(LogStatus.Pass, ("Test Passed: User is able to send a message to other user"));
+                    GlobalDefinitions.SaveScreenShotClass.SaveScreenshot(GlobalDefinitions.driver, "Sending a message via Chat");
+                    Console.WriteLine("Test Pass: Message is sent");
+                }
+                catch (Exception e)
+                {
+                    test.Log(LogStatus.Fail, ("Test Passed: User is not able to send a message to other user"));
+                    Console.WriteLine("Test Faild: Message is not sent" + e.Message);
+                }
+
+
             }
         }
 

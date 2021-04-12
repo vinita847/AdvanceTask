@@ -83,8 +83,10 @@ namespace MarsFramework.Global
 
             #region Initialise Reports
 
+
             extent = new ExtentReports(ReportPath, false, DisplayOrder.NewestFirst);
             extent.LoadConfig(ReportXMLPath);
+            //GlobalDefinitions.driver.Quit();
 
             #endregion
 
