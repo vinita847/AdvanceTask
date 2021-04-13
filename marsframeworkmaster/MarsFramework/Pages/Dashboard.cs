@@ -26,14 +26,14 @@ namespace MarsFramework.Pages
         [FindsBy(How = How.XPath, Using = "//div[@class='ui icon basic button'][1]")]
         private IWebElement SelectAllSign { get; set; }
 
-        //Serviceat index [2]
+        //Service at index [2]
         [FindsBy(How = How.XPath, Using = "(//input[@type='checkbox'])[2]")]
         private IWebElement CheckBoxsAtSecondEntry { get; set; }
         
 
         //Check Boxes
         [FindsBy(How = How.XPath, Using = "(//input[@type='checkbox'])")]
-        private IList<IWebElement> CheckBoxs { get; set; }
+        public IList<IWebElement> CheckBoxs { get; set; }
         //private IWebElement CheckBox { get; set; }
 
            
@@ -55,6 +55,10 @@ namespace MarsFramework.Pages
         [FindsBy(How = How.XPath, Using = "//a[@class='ui button'][contains(text(), 'Load More')]")]
         private IWebElement LoadMoreTab { get; set; }
 
+        //Show Less Tab
+        [FindsBy(How = How.XPath, Using = "//a[@class='ui button'][contains(text(), '...Show Less')]")]
+        private IWebElement ShowLessTab { get; set; }
+
         //Mark as read
         [FindsBy(How = How.XPath, Using = "//div//i[@class='check square icon']")]
         private IWebElement MarkAsReadSign { get; set; }
@@ -66,6 +70,17 @@ namespace MarsFramework.Pages
         [FindsBy(How = How.XPath, Using = "//div[contains(@class,'ns-box ns-growl ns-effect-jelly ns-type-success ns-show')]")]
         private IWebElement SuccessMsg { get; set; }
 
+        //Identify Service any Listing
+        [FindsBy(How = How.XPath, Using = "(//h4[contains(.,'Service Request')])[1]")]
+        private IWebElement ServiceListItem { get; set; }
+
+        //Checked Boxeds
+        [FindsBy(How = How.CssSelector, Using = "input:checked[type='checkbox']")]
+        private IList<IWebElement> ServicesChecked { get; set; }
+
+
+        
+
         #endregion
 
         public void SlectAll()
@@ -73,36 +88,53 @@ namespace MarsFramework.Pages
          //click on dashboard
             DashBoardBtn.Click();
             //click on Select all
-            Thread.Sleep(10000);
+            GlobalDefinitions.WaitForElement(GlobalDefinitions.driver, By.XPath("(//h4[contains(.,'Service Request')])[1]"), 10);
             SelectAllSign.Click();
+            GlobalDefinitions.WaitForElement(GlobalDefinitions.driver, By.XPath("//div//i[@class='ban icon']"), 10);
             GlobalDefinitions.wait(10);
                                
         }
-        public int CheckedServices()
+
+        public int TotalCheckBoxes()
         {
-            int totalCheckedServices = CheckBoxs.Count();
+            int CountTotalCheckBoxes = ServicesChecked.Count();
+            return CountTotalCheckBoxes;
+
+        }
+        public int TotalCheckedServices()
+        {
+
+            int totalCheckedServices = ServicesChecked.Count();
             return totalCheckedServices;
         }
-        public int AllServices()
-        
+        public int AllServices()        
         {
             int totalServices = Services.Count();
+            Console.WriteLine("Total Displayed Services =" + totalServices);
             return totalServices;
         }
 
-        public void UnselectAllSteps()
-        {
-            Thread.Sleep(5000);
-            //click on Unselect
-            UnselectSign.Click();
-        }
-
+        public void UnselectAllSteps() => UnselectSign.Click();        
        
         public void LoadMoreSteps()
         {
             DashBoardBtn.Click();
-            GlobalDefinitions.wait(30);
+            GlobalDefinitions.WaitForElement(GlobalDefinitions.driver, By.XPath("//a[@class='ui button'][contains(text(), 'Load More')]"), 10);
             LoadMoreTab.Click();
+           Console.WriteLine("LoadMore Tab Displayed");
+            GlobalDefinitions.WaitForElement(GlobalDefinitions.driver, By.XPath("//a[@class='ui button'][contains(text(), '...Show Less')]"), 10);
+
+
+            //LoadMoreTab.Click();
+
+        }
+
+        public void ClickOnShowLessStep()
+        {
+            ShowLessTab.Click();
+            GlobalDefinitions.WaitForElement(GlobalDefinitions.driver, By.XPath("//a[@class='ui button'][contains(text(), 'Load More')]"), 10);
+
+
         }
 
         public string SuccessMessage()

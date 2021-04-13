@@ -543,15 +543,15 @@ namespace MarsFramework
                 test = extent.StartTest("Select All Option for Notifications");
                 Dashboard dashboardObj = new Dashboard();
                 dashboardObj.SlectAll();
-                int Expectedvalue = dashboardObj.CheckedServices();
-                int ActualValue = 5;
+                int ActualValue = dashboardObj.TotalCheckedServices();
+                int Expectedvalue = dashboardObj.TotalCheckBoxes();
+               
                 try { 
                Assert.AreEqual(Expectedvalue, ActualValue);
+
                test.Log(LogStatus.Pass, "Test Pass: All Checkboxes selected");
-              GlobalDefinitions.SaveScreenShotClass.SaveScreenshot(GlobalDefinitions.driver, "Select All");
-
-                    Console.WriteLine("Test Pass : All notifications are selected");
-
+               GlobalDefinitions.SaveScreenShotClass.SaveScreenshot(GlobalDefinitions.driver, "Select All");
+               Console.WriteLine("Test Pass : All notifications are selected");
 
                 }
                 catch(Exception e)
@@ -562,14 +562,14 @@ namespace MarsFramework
 
             }
             [Test]
-            public void UnSelectAll()
+            public void UnSelectAllNotifications()
             {
                 test = extent.StartTest("Test for Unselect all checkboxes");
                 Dashboard dashboardObj = new Dashboard();
                 dashboardObj.SlectAll();
                 dashboardObj.UnselectAllSteps();
-                int Expectedvalue = dashboardObj.CheckedServices();
-                int ActualValue = 5;
+                int ActualValue = dashboardObj.TotalCheckedServices();
+                int Expectedvalue = dashboardObj.TotalCheckBoxes();
 
                 try
                 {
@@ -587,15 +587,18 @@ namespace MarsFramework
 
             }
 
-            [Test] //Assert not implemented (can verify by visiblity of "Show Less" button)
-            public void LoadMore()
+            [Test] 
+            public void LoadMoreForNotification()
             {
                 test = extent.StartTest("Test for Load More functionality for Notifications");
                 Dashboard dashboardObj = new Dashboard();
                 dashboardObj.LoadMoreSteps();
+                Thread.Sleep(10000);
+                //bool ActualCount = dashboardObj.AllServices();
+                int ActualCount = dashboardObj.AllServices();
                 try
-                {
-
+                {                   
+                    Assert.Greater(ActualCount, 5);
 
                     test.Log(LogStatus.Pass, "Able to load more Services");
                     Console.WriteLine("Test Pass: Able to cick on Load More tab");
@@ -607,9 +610,35 @@ namespace MarsFramework
                     Console.WriteLine(e + "Test failed: can not clcick on Load More tab");
                 }
                 
-            }          
+            }
 
-           [Test]
+            [Test]
+            public void ShowLessForNotification()
+            {
+                test = extent.StartTest("Test for Show Less functionality for Notifications");
+                Dashboard dashboardObj = new Dashboard();
+                dashboardObj.LoadMoreSteps();
+                dashboardObj.ClickOnShowLessStep();
+                int ActualCount = dashboardObj.AllServices();
+                try
+                {
+                    Assert.That(ActualCount > 0);
+                    //Assert.AreEqual(ActualCount, 5);
+
+                    test.Log(LogStatus.Pass, "Able to load Less Services by clicking on Show Less Tab");
+                    Console.WriteLine("Test Pass: Able to cick on Show Less tab");
+
+                }
+                catch (Exception e)
+                {
+                    test.Log(LogStatus.Fail, "Not able to click on Show Less tab");
+                    Console.WriteLine(e + "Test failed: can not clcick on Show Less tab");
+                }
+
+            }
+
+
+            [Test]
            public void MarkAsRead()
             {
                 test = extent.StartTest("Mark as read for notifications");
