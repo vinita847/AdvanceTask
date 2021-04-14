@@ -79,6 +79,7 @@ namespace MarsFramework.Pages
             SearchTextBox.SendKeys(GlobalDefinitions.ExcelLib.ReadData(2, "Category Name"));
             SearchIcon.Click();
 
+
         }
 
         public void FilterOnline()

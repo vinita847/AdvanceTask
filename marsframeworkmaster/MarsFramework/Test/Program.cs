@@ -430,7 +430,7 @@ namespace MarsFramework
 
             }
             [Test]
-            public void SeachCategory()
+            public void SeachByCategory()
             {
                 test = extent.StartTest("Test for search by category: Music & Audio");
                 Profile proObj = new Profile();
@@ -439,7 +439,7 @@ namespace MarsFramework
                 GlobalDefinitions.wait(10);
 
                 Search searchObj = new Search();
-                searchObj.SearchSkillByCatg();
+                searchObj.SearchSkillByCatg(); 
                 GlobalDefinitions.wait(10);
 
                 try
@@ -686,7 +686,7 @@ namespace MarsFramework
                 }
             }
             [Test]
-            public void Chat()
+            public void ChatSendingText()
             {
                 test = extent.StartTest("Varifying test functionality for a specific user");
                
@@ -709,16 +709,48 @@ namespace MarsFramework
                 }
                 catch (Exception e)
                 {
-                    test.Log(LogStatus.Fail, ("Test Passed: User is not able to send a message to other user"));
-                    Console.WriteLine("Test Faild: Message is not sent" + e.Message);
+                    test.Log(LogStatus.Fail, ("Test Failed: User is not able to send a message to other user"));
+                    Console.WriteLine("Test Failed: Message is not sent" + e.Message);
                 }
 
 
             }
+
+            [Test]
+            public void ChatHistory()
+            {
+                test = extent.StartTest("Test for Chat history");
+
+                Profile profileObj = new Profile();
+                profileObj.ClickonChatTab();
+                Message msgObj = new Message();
+                msgObj.UserSimi();
+                msgObj.selectChatBox();
+                string ActualMsg = msgObj.UserSimiFirstText();
+                string ExpectedMsg = "hu";
+               
+                try
+                {
+
+                    Assert.AreEqual(ExpectedMsg, ActualMsg);
+                    test.Log(LogStatus.Pass, ("Test Passed: User is able to see the chat history"));
+                    GlobalDefinitions.SaveScreenShotClass.SaveScreenshot(GlobalDefinitions.driver, "Chat History");
+                    Console.WriteLine("Test Pass: Can see chat history");
+                }
+                catch (Exception e)
+                {
+                    test.Log(LogStatus.Fail, ("Test Failed: User is not able to send a message to other user"));
+                    Console.WriteLine("Test Failed: Message is not sent" + e.Message);
+                }
+
+
+            }
+
+
         }
 
 
 
-        
+
     }
 }

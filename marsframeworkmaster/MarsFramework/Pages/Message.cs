@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using OpenQA.Selenium;
 using System.Threading;
+using OpenQA.Selenium.Interactions;
 
 namespace MarsFramework.Pages
 {
@@ -22,6 +23,10 @@ namespace MarsFramework.Pages
         //identify User
         [FindsBy(How = How.XPath, Using = "(//div[@class='item'])[5]")]
         private IWebElement SelectUser1 { get; set; }
+
+        //another User
+        [FindsBy(How = How.XPath, Using = "(//div[contains(.,'simLastest chat row Lastest chat row Time')])[9]")]
+        private IWebElement SelectUsersimi { get; set; }
 
         //select text box
         [FindsBy(How = How.XPath, Using = "//div[@id='input-message-container']/input")]
@@ -40,6 +45,16 @@ namespace MarsFramework.Pages
         [FindsBy(How = How.XPath, Using = "//div[@class='message-container']//span[contains(text(), 'Text message')]")]
         private IWebElement SentText { get; set; }
 
+        //IdeftifyFirstChatFRom Simi
+        [FindsBy(How = How.XPath, Using = "(//span[contains(.,'hu')])[2]")]
+        private IWebElement FirstTextSimi { get; set; }
+
+        //select chatBox
+        [FindsBy(How = How.CssSelector, Using = "#chatBox")]
+        private IWebElement ChatBox { get; set; }
+        //click enter to add the tag
+        Actions enterBtn = new Actions(GlobalDefinitions.driver);
+
 
         #endregion
         public void SendingTextSteps()
@@ -53,6 +68,31 @@ namespace MarsFramework.Pages
             GlobalDefinitions.WaitForElement(GlobalDefinitions.driver, By.XPath("//div[@class='message-container']//span[contains(text(), 'Text message')]"), 10);
 
         }
+
+        public void UserSimi()
+        {
+            SelectUsersimi.Click();
+            GlobalDefinitions.WaitForElement(GlobalDefinitions.driver, By.XPath("(//span[contains(.,'hu')])[2]"), 10);
+
+        }
+
+        public void selectChatBox()
+        {
+            ChatBox.Click();
+            enterBtn.SendKeys(Keys.ArrowUp).Perform();
+            Thread.Sleep(10000);
+            enterBtn.SendKeys(Keys.ArrowDown).Perform();
+            Thread.Sleep(10000);
+
+        }
+
+        public string UserSimiFirstText()
+        {
+            string Text1 = FirstTextSimi.Text;
+            return Text1;
+
+        }
+
 
         public int LatestText()
         {
